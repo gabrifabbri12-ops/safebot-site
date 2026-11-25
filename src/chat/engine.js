@@ -30,12 +30,88 @@ const ui = {
 const escapeHtml = (value) =>
   value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-const format = (value) =>
-  escapeHtml(value)
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/1\.96\.96/g, '<a href="tel:19696">1.96.96</a>')
-    .replace(/\b(112|114)\b/g, '<a href="tel:$1">$1</a>')
-    .replace(/\n/g, "<br>");
+/* Siti citati nelle risposte: dal telefono diventano link da toccare. */
+const SITI = {
+  "commissariatodips.it": "https://www.commissariatodips.it",
+  "garanteprivacy.it": "https://www.garanteprivacy.it",
+  "generazioniconnesse.it": "https://www.generazioniconnesse.it",
+  "azzurro.it": "https://azzurro.it",
+  "114.it": "https://114.it",
+};
+
+const SITI_RE = Object.keys(SITI)
+  .map((sito) => sito.replace(/[.]/g, "[.]"))
+  .join("|");
+
+const LINKY = new RegExp(`(https?://[^\\s<]+|(?:www\\.)?(?:${SITI_RE}))`, "g");
+
+/* Grassetto, numeri chiamabili e siti linkati, senza toccare i link già creati. */
+function inline(value) {
+  return escapeHtml(value)
+    .split(LINKY)
+    .map((part, index) => {
+      if (index % 2) {
+        const url = /^https?:/.test(part) ? part : SITI[part.replace(/^www\./, "")] || `https://${part}`;
+        return `<a href="${url}" target="_blank" rel="noopener">${part}</a>`;
+      }
+      return part
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/1\.96\.96/g, '<a href="tel:19696">1.96.96</a>')
+        .replace(/\b(112|114)\b/g, '<a href="tel:$1">$1</a>');
+    })
+    .join("");
+}
+
+/*
+ * Impaginazione pensata per lo schermo del telefono: ogni riga diventa un
+ * paragrafo, le righe con "•" o "1." diventano veri elenchi (puntati e
+ * numerati), così le risposte lunghe non sono un muro di testo.
+ */
+function format(value) {
+  const righe = inline(value).split("\n");
+  const blocchi = [];
+  let elenco = null;
+
+  const chiudiElenco = () => {
+    if (!elenco) return;
+    const inizio = elenco.tag === "ol" && elenco.da !== 1 ? ` start="${elenco.da}"` : "";
+    blocchi.push(
+      `<${elenco.tag} class="msg__list"${inizio}>${elenco.voci.map((voce) => `<li>${voce}</li>`).join("")}</${elenco.tag}>`,
+    );
+    elenco = null;
+  };
+
+  for (const riga of righe) {
+    const testo = riga.trim();
+    if (!testo) {
+      chiudiElenco();
+      continue;
+    }
+    const punto = testo.match(/^[•·\-]\s+(.+)$/);
+    const numero = testo.match(/^(\d{1,2})[.)]\s+(.+)$/);
+    if (punto) {
+      if (!elenco || elenco.tag !== "ul") {
+        chiudiElenco();
+        elenco = { tag: "ul", da: 1, voci: [] };
+      }
+      elenco.voci.push(punto[1]);
+      continue;
+    }
+    if (numero) {
+      const da = Number(numero[1]);
+      if (!elenco || elenco.tag !== "ol" || elenco.da + elenco.voci.length !== da) {
+        chiudiElenco();
+        elenco = { tag: "ol", da, voci: [] };
+      }
+      elenco.voci.push(numero[2]);
+      continue;
+    }
+    chiudiElenco();
+    blocchi.push(`<span class="msg__p">${testo}</span>`);
+  }
+  chiudiElenco();
+  return blocchi.join("");
+}
 
 /* minuscolo, senza accenti, apostrofi dritti, spazi compattati */
 const normalize = (value) =>
@@ -77,7 +153,7 @@ let lastUnclear = false;
 
 function addBubble(text, who, options = {}) {
   if (!ui.messages) return null;
-  const node = document.createElement("p");
+  const node = document.createElement("div");
   node.className = `msg msg--${who}${options.urgent ? " msg--urgent" : ""}`;
   node.innerHTML = format(text);
   ui.messages.appendChild(node);
@@ -362,6 +438,29 @@ const reportConsent = $("report-consent");
 const reportStatus = $("report-status");
 const reportSubmit = $("report-submit");
 
+/*
+ * Copia facoltativa della segnalazione in un foglio Google, tramite il
+ * modulo Apps Script di src/google-apps-script.gs (indirizzo in
+ * botpress.config.js → reportEndpoint). Il foglio non può rispondere al
+ * browser, quindi la chiamata parte e non si aspetta la risposta: la
+ * segnalazione resta comunque salvata da Netlify Forms.
+ */
+function copiaNelFoglio(dati) {
+  const endpoint = config.reportEndpoint;
+  if (!endpoint) return;
+  try {
+    fetch(endpoint, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({ ...dati, pagina: window.location.href }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (errore) {
+    console.warn("[SafeBot] foglio Google non raggiungibile:", errore);
+  }
+}
+
 const setReportStatus = (message, kind = "") => {
   if (!reportStatus) return;
   reportStatus.textContent = message;
@@ -392,16 +491,26 @@ reportForm?.addEventListener("submit", async (event) => {
     return;
   }
 
-  /* Netlify Forms: i dati vengono raccolti da Netlify, non li salviamo noi. */
+  /* I dati li raccoglie Netlify Forms (e, se attivo, il foglio Google). */
+  const dati = {
+    anonimo: anonymous?.checked ? "sì" : "no",
+    contatto: anonymous?.checked ? "" : (contactInput?.value.trim() ?? ""),
+    cosa: what,
+    quando: $("report-when")?.value.trim() ?? "",
+    dove: $("report-where")?.value.trim() ?? "",
+    prove: $("report-proofs")?.value.trim() ?? "",
+    website: $("report-website")?.value ?? "",
+  };
+
   const body = new URLSearchParams({
     "form-name": "segnalazione",
-    anonymous: anonymous?.checked ? "sì" : "no",
-    contact: anonymous?.checked ? "" : (contactInput?.value.trim() ?? ""),
-    what,
-    when: $("report-when")?.value.trim() ?? "",
-    where: $("report-where")?.value.trim() ?? "",
-    proofs: $("report-proofs")?.value.trim() ?? "",
-    website: $("report-website")?.value ?? "",
+    anonymous: dati.anonimo,
+    contact: dati.contatto,
+    what: dati.cosa,
+    when: dati.quando,
+    where: dati.dove,
+    proofs: dati.prove,
+    website: dati.website,
   });
 
   reportSubmit?.setAttribute("disabled", "disabled");
@@ -414,6 +523,7 @@ reportForm?.addEventListener("submit", async (event) => {
       body: body.toString(),
     });
     if (!response.ok) throw new Error("Invio non riuscito");
+    copiaNelFoglio(dati);
     const success = $("report-success");
     if (reportForm) reportForm.hidden = true;
     if (success) {
