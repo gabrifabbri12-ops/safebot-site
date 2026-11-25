@@ -1,0 +1,293 @@
+        <div class="wrap chat__grid">
+          <div class="chat__intro">
+            <p class="eyebrow">La chat</p>
+            <h2>Parla con SafeBot, con parole tue</h2>
+            <p class="lead">
+              Nessuna domanda giusta, nessuna parola difficile. Scrivi come parleresti a un amico: SafeBot ti
+              risponde con calma e ti aiuta a mettere in ordine le idee.
+            </p>
+
+            <ul class="features">
+              <li>
+                <span class="features__n">1</span>
+                <div>
+                  <strong>Racconti cosa succede</strong>
+                  <p>Anche poche parole, anche di notte. Non serve spiegare tutto subito.</p>
+                </div>
+              </li>
+              <li>
+                <span class="features__n">2</span>
+                <div>
+                  <strong>SafeBot ti fa qualche domanda</strong>
+                  <p>Per capire se è bullismo, cyberbullismo o un litigio, e quanto è urgente.</p>
+                </div>
+              </li>
+              <li>
+                <span class="features__n">3</span>
+                <div>
+                  <strong>Ti propone i prossimi passi</strong>
+                  <p>Cosa dire, a chi parlare, quali prove salvare e quali numeri chiamare.</p>
+                </div>
+              </li>
+            </ul>
+
+            <div class="safety">
+              <h3>Cosa SafeBot non fa</h3>
+              <p>
+                SafeBot è un programma: <strong>non è una persona</strong>, non prova emozioni e non capisce
+                davvero come stai. Non fa diagnosi, non sostituisce uno psicologo o un insegnante e non tiene un
+                registro delle tue segnalazioni. Se la situazione è grave, il suo compito è portarti da una
+                persona vera.
+              </p>
+            </div>
+          </div>
+
+          <div class="chatpanel" id="chat-panel" aria-label="Chat con SafeBot">
+            <div class="chatpanel__head">
+              <span class="chatpanel__avatar">S</span>
+              <div class="chatpanel__who">
+                <strong>SafeBot</strong>
+                <span class="chatpanel__sub-long">Intelligenza artificiale · bullismo e cyberbullismo</span>
+                <span class="chatpanel__sub-short">Assistente AI</span>
+              </div>
+              <span class="status" id="chat-status" data-mode="demo">AI</span>
+            </div>
+
+            <p class="ai-banner" role="note">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8" />
+                <path d="M12 8.2v4.4M12 15.8v.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span>
+                <strong>Stai parlando con un'intelligenza artificiale</strong>, non con una persona. Per un aiuto
+                umano chiama il <a href="tel:19696">1.96.96</a> o parlati con un adulto.
+              </span>
+            </p>
+
+            <!-- Chat con l'assistente del sito -->
+            <div class="chatpanel__body" id="chat-demo">
+              <div class="messages" id="messages" role="log" aria-live="polite" aria-label="Messaggi della chat">
+                <p class="msg msg--bot">
+                  Ciao 👋 Sono SafeBot, un'<strong>intelligenza artificiale</strong>: non sono una persona e non
+                  sono uno psicologo. Sono qui per aiutarti a capire cosa fare, senza giudicare. Puoi scrivermi
+                  con parole tue.
+                </p>
+                <div class="chips" id="intro-chips">
+                  <button class="chip chip--btn" type="button">Ho subito bullismo</button>
+                  <button class="chip chip--btn" type="button">Mi insultano online</button>
+                  <button class="chip chip--btn" type="button">Un mio amico sta male</button>
+                  <button class="chip chip--btn" type="button">Come faccio una segnalazione?</button>
+                </div>
+              </div>
+
+              <form class="composer" id="composer">
+                <label class="sr-only" for="chat-input">Scrivi il tuo messaggio</label>
+                <input
+                  id="chat-input"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Scrivi qui…"
+                  maxlength="500"
+                />
+                <button class="composer__send" type="submit" aria-label="Invia messaggio">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 5.5 19.5 12 13 18.5" /></svg>
+                </button>
+              </form>
+              <p class="chatpanel__note" id="chat-note">
+                Risposte automatiche di un'intelligenza artificiale: non sono consigli medici, psicologici o legali
+                e non sostituiscono una persona. In caso di pericolo chiama il 112 o il 114.
+              </p>
+            </div>
+
+            <!-- Contenitore per un assistente esterno (opzionale, spento) -->
+            <div class="chatpanel__body chatpanel__body--bp" id="chat-bp" hidden>
+              <div id="bp-embedded-webchat"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- NUMERI -->
+      <section class="section" id="numeri">
+        <div class="wrap">
+          <div class="section__head">
+            <p class="eyebrow">Persone reali</p>
+            <h2>A chi puoi rivolgerti</h2>
+            <p class="section__sub">
+              La chat è un inizio, non un traguardo. Questi servizi rispondono davvero, e sono gratuiti.
+            </p>
+          </div>
+
+          <p class="tap-hint">
+            Dal telefono basta un tocco: i pulsanti verdi chiamano il numero, quelli chiari aprono il sito
+            ufficiale.
+          </p>
+
+          <div class="numbers">
+            <article class="num num--urgent">
+              <span class="num__n">112</span>
+              <span class="num__label">Emergenze</span>
+              <span class="num__desc">Numero unico europeo: se sei in pericolo adesso.</span>
+              <div class="num__actions">
+                <a class="num__call" href="tel:112">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Chiama 112
+                </a>
+              </div>
+            </article>
+
+            <article class="num num--hot">
+              <span class="num__n">114</span>
+              <span class="num__label">Emergenza Infanzia</span>
+              <span class="num__desc">Telefono Azzurro, 24 ore su 24. Anche chat e WhatsApp.</span>
+              <div class="num__actions">
+                <a class="num__call" href="tel:114">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Chiama 114
+                </a>
+                <a class="num__site" href="https://114.it" target="_blank" rel="noopener">Sito e chat</a>
+              </div>
+            </article>
+
+            <article class="num">
+              <span class="num__n">1.96.96</span>
+              <span class="num__label">Telefono Azzurro</span>
+              <span class="num__desc">Ascolto e supporto psicologico, gratis, anche in chat.</span>
+              <div class="num__actions">
+                <a class="num__call" href="tel:19696">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M6.5 3.5h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A16 16 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Chiama 1.96.96
+                </a>
+                <a class="num__site" href="https://azzurro.it" target="_blank" rel="noopener">Sito ufficiale</a>
+              </div>
+            </article>
+
+            <article class="num">
+              <span class="num__n">Postale</span>
+              <span class="num__label">Polizia Postale</span>
+              <span class="num__desc">Segnalazioni di cyberbullismo e contenuti online illegali.</span>
+              <div class="num__actions">
+                <a
+                  class="num__site num__site--strong"
+                  href="https://www.commissariatodips.it"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Segnala sul sito ufficiale
+                </a>
+              </div>
+            </article>
+
+            <article class="num">
+              <span class="num__n">Aiuto</span>
+              <span class="num__label">Generazioni Connesse</span>
+              <span class="num__desc">Sportello italiano per la sicurezza online: consigli e segnalazioni.</span>
+              <div class="num__actions">
+                <a
+                  class="num__site num__site--strong"
+                  href="https://www.generazioniconnesse.it"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Vai al sito ufficiale
+                </a>
+              </div>
+            </article>
+
+            <article class="num">
+              <span class="num__n">Privacy</span>
+              <span class="num__label">Garante Privacy</span>
+              <span class="num__desc">Per chiedere la rimozione di contenuti offensivi che i social non tolgono.</span>
+              <div class="num__actions">
+                <a
+                  class="num__site num__site--strong"
+                  href="https://www.garanteprivacy.it"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Modulo e sito ufficiale
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <div class="local">
+            <div>
+              <h3>Se vai a scuola</h3>
+              <p>
+                Chiedi dello <strong>sportello d'ascolto</strong> o del <strong>referente antibullismo</strong>:
+                in Italia ogni istituto deve averne uno. Puoi anche scrivere al tuo coordinatore di classe o al
+                dirigente. Non devi spiegare tutto in una volta: basta dire "vorrei parlare con qualcuno".
+              </p>
+            </div>
+            <div>
+              <h3>Se sei un genitore o un insegnante</h3>
+              <p>
+                Ascolta prima di intervenire, non togliere il telefono al ragazzo e documenta i fatti con date e
+                screenshot. Per i casi gravi si contatta la Polizia Postale; per il supporto psicologico, il
+                pediatra o i servizi territoriali.
+              </p>
+            </div>
+            <div>
+              <h3>Se non vai più a scuola</h3>
+              <p>
+                Il bullismo non finisce con la scuola. Puoi rivolgerti al tuo medico di base, ai servizi sociali
+                del Comune, a un centro di ascolto o a un'associazione sul territorio. Per episodi online la
+                <strong>Polizia Postale</strong> raccoglie segnalazioni anche dagli adulti.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOMANDE -->
+      <section class="section" id="domande">
+        <div class="wrap narrow">
+          <div class="section__head">
+            <p class="eyebrow">Domande frequenti</p>
+            <h2>Le cose che ci chiedono più spesso</h2>
+          </div>
+
+          <div class="faq">
+            <details open>
+              <summary>Sto parlando con una persona o con un'AI?</summary>
+              <p>
+                Con un'<strong>intelligenza artificiale</strong>. SafeBot non è una persona: è un programma che
+                risponde in modo automatico con le informazioni con cui è stato preparato. Non ha emozioni e non
+                può capire davvero come stai. Per questo, quando la cosa è importante, ti invita sempre a parlare
+                con un adulto o a chiamare il Telefono Azzurro <a href="tel:19696">1.96.96</a>.
+              </p>
+            </details>
+            <details>
+              <summary>La chat è anonima? Le mie risposte restano private?</summary>
+              <p>
+                SafeBot non ti chiede nome, cognome o classe: puoi scrivere solo quello che vuoi raccontare. La
+                conversazione resta nel tuo browser, non viene inviata a nessun servizio esterno e non viene
+                pubblicata da nessuna parte. Se preferisci non essere riconoscibile, usa un soprannome.
+              </p>
+            </details>
+            <details>
