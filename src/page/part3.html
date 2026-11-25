@@ -1,0 +1,284 @@
+              <summary>SafeBot prende il posto di uno psicologo o di un insegnante?</summary>
+              <p>
+                No. È un assistente informativo: spiega, orienta e ti accompagna verso una persona vera. Non fa
+                diagnosi, non prescrive nulla e non decide al posto tuo.
+              </p>
+            </details>
+            <details>
+              <summary>Devo raccontare per forza cosa è successo?</summary>
+              <p>
+                No. Puoi iniziare anche con "non so da dove cominciare" o "ho solo una domanda". Puoi fermarti
+                quando vuoi e riprendere dopo.
+              </p>
+            </details>
+            <details>
+              <summary>Cosa succede se racconto un episodio grave?</summary>
+              <p>
+                                Se c'è pericolo immediato, SafeBot ti invita a chiamare il <a href="tel:112">112</a> o il
+                <a href="tel:114">114</a> e a parlare subito con un adulto di fiducia. La chat non fa segnalazioni
+                automatiche: la segnalazione la fai tu, con l'aiuto di un adulto o di un servizio competente.
+              </p>
+            </details>
+            <details>
+              <summary>Da dove arrivano le informazioni che dà?</summary>
+              <p>
+                Da contenuti semplici e verificati su bullismo e cyberbullismo, sui passi da fare e sui servizi
+                ufficiali italiani (112, 114, Telefono Azzurro, Polizia Postale, Garante Privacy). Non inventa
+                numeri o procedure: quando non sa qualcosa lo dice e ti invita a parlare con una persona vera.
+              </p>
+            </details>
+            <details>
+              <summary>Funziona dal telefono?</summary>
+              <p>Sì. Il sito e la chat sono pensati prima per lo schermo del telefono, poi per il computer.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="segnala">
+        <div class="wrap narrow">
+          <p class="eyebrow">Segnalazione</p>
+          <h2>Segnala un episodio</h2>
+          <p class="section__sub">
+            Puoi farlo in forma <strong>anonima</strong>: non chiediamo nome, email o numero di telefono. La
+            segnalazione viene letta solo dal gestore del servizio.
+          </p>
+
+          <form class="report" id="report-form" name="segnalazione" method="POST" data-netlify="true" netlify-honeypot="website" novalidate>
+            <input type="hidden" name="form-name" value="segnalazione" />
+            <label class="check">
+              <input type="checkbox" id="report-anonymous" name="anonymous" checked />
+              <span>Voglio restare <strong>anonimo</strong></span>
+            </label>
+
+            <div class="report__field" id="contact-field" hidden>
+              <label for="report-contact">Come vuoi essere ricontattato? (facoltativo)</label>
+              <input
+                id="report-contact"
+                name="contact"
+                type="text"
+                maxlength="200"
+                autocomplete="off"
+                placeholder="Email, Instagram o un altro modo per risponderti"
+              />
+              <p class="hint">Se lasci vuoto, la segnalazione resta valida ma non possiamo risponderti.</p>
+            </div>
+
+            <div class="report__field">
+              <label for="report-what">Cosa è successo? <span class="req">*</span></label>
+              <textarea
+                id="report-what"
+                name="what"
+                rows="5"
+                maxlength="4000"
+                required
+                placeholder="Racconta con parole tue: cosa fanno, da quanto tempo, chi è coinvolto. Non serve essere precisi."
+              ></textarea>
+            </div>
+
+            <div class="report__grid">
+              <div class="report__field">
+                <label for="report-when">Quando?</label>
+                <input id="report-when" name="when" maxlength="200" placeholder="Oggi, da settimane…" />
+              </div>
+              <div class="report__field">
+                <label for="report-where">Dove?</label>
+                <input id="report-where" name="where" maxlength="200" placeholder="A scuola, in chat, sui social…" />
+              </div>
+            </div>
+
+            <div class="report__field">
+              <label for="report-proofs">Hai prove o testimoni? (facoltativo)</label>
+              <textarea
+                id="report-proofs"
+                name="proofs"
+                rows="3"
+                maxlength="1000"
+                placeholder="Screenshot, messaggi, qualcuno che ha visto…"
+              ></textarea>
+            </div>
+
+            <div class="report__hp" aria-hidden="true">
+              <label for="report-website">Non compilare questo campo</label>
+              <input id="report-website" name="website" tabindex="-1" autocomplete="off" />
+            </div>
+
+            <label class="check check--consent">
+              <input type="checkbox" id="report-consent" required />
+              <span>
+                Ho letto la <a href="#privacy">privacy</a> e so che la segnalazione sarà letta dal gestore del
+                servizio.
+              </span>
+            </label>
+
+            <div class="report__actions">
+              <button class="btn btn--primary" type="submit" id="report-submit">Invia la segnalazione</button>
+              <p class="report__status" id="report-status" role="status" aria-live="polite"></p>
+            </div>
+
+            <p class="report__emergency">
+              Se sei in pericolo adesso non aspettare il modulo: chiama il <a href="tel:112">112</a> o il
+              <a href="tel:114">114</a>, oppure parlane con un adulto di fiducia.
+            </p>
+          </form>
+
+          <div class="report__done" id="report-success" tabindex="-1" hidden>
+            <h3>Segnalazione inviata</h3>
+            <p>
+              Grazie, la tua segnalazione è stata salvata. Se hai lasciato un contatto, chi gestisce il servizio
+              può risponderti; altrimenti resta anonima.
+            </p>
+            <p>
+              Se la situazione è urgente non aspettare: chiama il <a href="tel:112">112</a> o il
+              <a href="tel:114">114</a>, oppure parlane con un adulto di fiducia.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--privacy" id="privacy">
+        <div class="wrap narrow">
+          <p class="eyebrow">Privacy</p>
+          <h2>Come trattiamo i tuoi dati</h2>
+          <p class="section__sub">
+            In breve: la chat resta sul tuo dispositivo e raccogliamo dati solo se scegli di inviare una
+            segnalazione.
+          </p>
+
+          <div class="privacy">
+            <article>
+              <h3>Titolare del trattamento</h3>
+              <p>
+                Il servizio SafeBot è gestito dal titolare del trattamento, contattabile all'indirizzo
+                <a href="mailto:gabri.fabbri12@gmail.com">gabri.fabbri12@gmail.com</a> per qualsiasi domanda sulla
+                privacy.
+              </p>
+            </article>
+
+            <article>
+              <h3>Quali dati raccogliamo</h3>
+              <p>
+                Navigando e usando la chat: nessuno. Non ci sono account né profilazione e non chiediamo nome,
+                cognome, età, classe, indirizzo o numero di telefono. Solo se scegli di inviare una segnalazione
+                vengono salvati i dati che descriviamo qui sotto.
+              </p>
+            </article>
+
+            <article>
+              <h3>Le segnalazioni inviate</h3>
+              <p>
+                Se usi il modulo salviamo il testo che scrivi, i campi facoltativi (quando, dove, prove) e, solo se
+                scegli di non restare anonimo, il contatto che indichi. Servono unicamente a leggere e gestire la
+                segnalazione: le legge solo il gestore del servizio, non vengono pubblicate né condivise. Non
+                registriamo il tuo indirizzo IP né la tua posizione. Sono conservate per il tempo necessario a
+                gestirle e comunque non oltre 6 mesi, oppure cancellate prima se lo chiedi.
+              </p>
+            </article>
+
+            <article>
+              <h3>La chat resta sul tuo dispositivo</h3>
+              <p>
+                I messaggi che scrivi sono elaborati direttamente nel browser: non vengono inviati a server
+                esterni, non vengono salvati e non sono visibili a nessuno. Se ricarichi o chiudi la pagina, la
+                conversazione si azzera.
+              </p>
+            </article>
+
+            <article>
+              <h3>Cookie</h3>
+              <p>
+                Il sito non usa cookie di profilazione, cookie pubblicitari, pixel di tracciamento o strumenti di
+                analisi statistica. Non salva preferenze sul tuo dispositivo.
+              </p>
+            </article>
+
+            <article>
+              <h3>Dati tecnici dell'hosting</h3>
+              <p>
+                Come per qualunque sito web, il fornitore che ospita le pagine può registrare dati tecnici
+                (indirizzo IP, data e ora della richiesta, tipo di browser) per garantire sicurezza e funzionamento
+                del servizio.
+              </p>
+            </article>
+
+            <article>
+              <h3>Minorenni</h3>
+              <p>
+                Il servizio è pensato anche per ragazze e ragazzi. La segnalazione può essere inviata in forma
+                anonima e non chiediamo di raccontare fatti che ti identifichino. Se sei minorenne e vuoi parlare
+                con una persona, chiama il <a href="tel:19696">1.96.96</a> o il <a href="tel:114">114</a>.
+              </p>
+            </article>
+
+            <article>
+              <h3>I tuoi diritti</h3>
+              <p>
+                Puoi chiedere in ogni momento informazioni, accesso, rettifica o cancellazione dei dati che ti
+                riguardano, scrivendo all'indirizzo indicato sopra. Se ritieni che il trattamento non rispetti la
+                normativa, puoi rivolgerti al
+                <a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">Garante per la protezione dei dati personali</a>.
+              </p>
+            </article>
+
+            <article>
+              <h3>Modifiche all'informativa</h3>
+              <p>
+                Se il servizio cambierà (per esempio con l'aggiunta di un assistente AI esterno), aggiorneremo
+                questa pagina indicando quali dati vengono trattati e da chi, prima di attivare la novità.
+              </p>
+            </article>
+          </div>
+
+          <p class="privacy__updated">
+            Informativa aggiornata a novembre 2026 · Contatto privacy:
+            <a href="mailto:gabri.fabbri12@gmail.com">gabri.fabbri12@gmail.com</a>
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap footer__inner">
+        <div class="footer__brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5v-8Z"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <div>
+            <strong>SafeBot</strong>
+            <p>Servizio online di ascolto e informazione su bullismo e cyberbullismo, aperto a tutti.</p>
+          </div>
+        </div>
+        <p class="footer__note">
+          SafeBot è un'intelligenza artificiale: non è una persona e non è un servizio di emergenza. Non sostituisce
+          professionisti sanitari o scolastici. In caso di pericolo chiama <a href="tel:112">112</a> o
+          <a href="tel:114">114</a>.<br />
+          <a href="#segnala">Segnala un episodio</a> · <a href="#privacy">Privacy: come trattiamo i dati</a>
+        </p>
+      </div>
+    </footer>
+
+    <a class="fab" href="#chat" aria-label="Apri la chat con SafeBot">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5v-8Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linejoin="round"
+        />
+        <circle cx="9" cy="9.5" r="1.1" fill="currentColor" />
+        <circle cx="12.5" cy="9.5" r="1.1" fill="currentColor" />
+        <circle cx="16" cy="9.5" r="1.1" fill="currentColor" />
+      </svg>
+      <span>Parla con SafeBot</span>
+    </a>
+
+  </body>
+</html>
