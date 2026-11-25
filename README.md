@@ -24,8 +24,10 @@ Netlify: build `node build.mjs`, publish directory `dist` (già scritti in `netl
 | `src/page/part1-3.html` | la pagina, divisa in tre parti che il build riunisce in `index.html` |
 | `src/chat/intents.js` | gli argomenti che la chat riconosce: parole chiave, risposte, suggerimenti |
 | `src/chat/engine.js` | il motore della chat: riconoscimento, priorità delle emergenze, modulo di segnalazione |
+| `src/styles/chat.css` | ritocchi di stile per leggere la chat dal telefono |
 | `src/robots.txt`, `src/sitemap.xml` | file per i motori di ricerca |
-| `src/botpress.config.js` | configurazione della chat esterna (spenta: vedi sotto) |
+| `src/botpress.config.js` | configurazione della chat esterna e del foglio Google (vedi sotto) |
+| `src/google-apps-script.gs` | script da incollare in un foglio Google per riceverci le segnalazioni |
 | `static/` | immagine Open Graph (og.png) in formato testo base64 |
 | `build.mjs` | mette insieme tutto dentro `dist/` |
 
@@ -40,18 +42,36 @@ Il motore controlla sempre prima le frasi di emergenza (autolesionismo, pericolo
 immediato, ricatti), poi riconosce l'argomento con più parole chiave, poi le richieste
 fuori tema e solo alla fine dice "non ho capito".
 
+Righe che iniziano con `•` o con `1.` diventano elenchi veri nella chat: è il modo più
+leggibile per le risposte lunghe sul telefono.
+
 ## Segnalazioni
 
-Il modulo "Prepara una segnalazione" usa **Netlify Forms**: le segnalazioni arrivano
+Il modulo "Segnala un episodio" usa **Netlify Forms**: le segnalazioni arrivano
 nella dashboard di Netlify del proprietario del sito, senza server e senza chiavi.
 
 Per riceverle via email: Netlify → **Forms** → **segnalazione** → **Notifications** →
 *Add notification* → *Email notification*.
 
+### Copia in un foglio Google (facoltativa)
+
+1. Crea un foglio Google e aprilo su **Estensioni → Apps Script**.
+2. Incolla il contenuto di `src/google-apps-script.gs`, salva, esegui
+   `eseguiIntestazioni` (crea il foglio "Segnalazioni").
+3. **Esegui il deployment → Nuovo deployment → App web**, esecuzione "me",
+   accesso "chiunque"; copia l'indirizzo che finisce con `/exec`.
+4. Incollalo in `src/botpress.config.js` → `reportEndpoint`, fai commit.
+
+Da quel momento ogni segnalazione viene copiata anche lì, in una riga con queste
+colonne: **Data · Anonimo · Contatto · Cosa è successo · Quando · Dove · Prove ·
+Pagina**. Netlify Forms continua a riceverla comunque, così niente va perso se il
+foglio ha un problema o l'indirizzo cambia.
+
 ## Immagini e stile
 
-`og.png` sta in `static/` come testo base64 (due parti), il build lo trasforma in
-immagine. Il CSS e la favicon vengono presi dal sito attuale durante il build; per
+`og.png` sta in `static/` come testo base64 (quattro parti: `.part1` … `.part4`),
+il build lo trasforma in immagine. Il CSS e la favicon vengono presi dal sito
+attuale durante il build; per
 averli nel repository basta copiarli in `static/` con lo stesso nome
 (`index-xSUd54VX.css`, `favicon.ico`).
 

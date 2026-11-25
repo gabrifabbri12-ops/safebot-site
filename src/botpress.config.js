@@ -12,6 +12,13 @@ window.SAFEBOT_CONFIG = {
   botId: "",
   clientId: "",
 
+  // Indirizzo del modulo Apps Script che salva le segnalazioni in un foglio
+  // Google (vedi src/google-apps-script.gs). Se lo compili, ogni segnalazione
+  // viene copiata anche lì, oltre che in Netlify Forms.
+  // Deve finire con /exec — esempio:
+  //   reportEndpoint: "https://script.google.com/macros/s/AKfycb.../exec"
+  reportEndpoint: "",
+
   // Versione della Webchat indicata da Botpress nell'embed code (es. "v3.6").
   injectVersion: "v3.6",
 
