@@ -1,0 +1,94 @@
+/*
+ * Ritocchi di stile di SafeBot, aggiunti dopo il CSS del sito.
+ *
+ * Servono a leggere bene la chat dal telefono: risposte divise in paragrafi,
+ * elenchi puntati e numerati veri, pulsanti facili da toccare e modulo di
+ * segnalazione su una sola colonna.
+ */
+
+.msg {
+  overflow-wrap: anywhere;
+}
+
+.msg .msg__p {
+  display: block;
+}
+
+.msg .msg__p + .msg__p {
+  margin-top: 0.6rem;
+}
+
+.msg .msg__list {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.msg .msg__list li {
+  position: relative;
+  padding-left: 1.1rem;
+}
+
+.msg .msg__list li::before {
+  content: "";
+  position: absolute;
+  left: 0.15rem;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+.msg ol.msg__list {
+  list-style: decimal;
+  padding-left: 1.35rem;
+}
+
+.msg ol.msg__list li {
+  padding-left: 0.15rem;
+}
+
+.msg ol.msg__list li::before {
+  content: none;
+}
+
+.msg--me .msg__list li::before {
+  background: #fff;
+  opacity: 0.75;
+}
+
+.msg a {
+  word-break: break-word;
+}
+
+@media (max-width: 980px) {
+  .chatpanel {
+    position: static;
+    height: auto;
+  }
+
+  .chatpanel .messages {
+    max-height: min(56vh, 480px);
+  }
+
+  .composer {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  }
+
+  .chips .chip--btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+  }
+
+  .report__grid {
+    grid-template-columns: 1fr;
+  }
+}

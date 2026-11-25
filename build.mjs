@@ -2,7 +2,7 @@
  * Prepara la cartella dist/ da pubblicare su Netlify.
  *
  * Cosa fa:
- *  1. ricompone index.html dalle due parti in src/ (head + body);
+ *  1. ricompone index.html dalle parti in src/page/ e aggiunge src/styles/chat.css;
  *  2. unisce intents.js e engine.js in un unico script della chat;
  *  3. copia robots.txt, sitemap.xml e botpress.config.js;
  *  4. recupera i file grafici (CSS, og.png, favicon.ico) dal sito attuale, se
@@ -91,7 +91,11 @@ const partiPagina = (await readdir(pageDir))
   .filter((file) => /^part\d+\.html$/.test(file))
   .sort((a, b) => Number(a.match(/\d+/)[0]) - Number(b.match(/\d+/)[0]));
 const pagina = (await Promise.all(partiPagina.map((file) => readFile(path.join(pageDir, file), "utf8")))).join("");
-await scrivi("index.html", pagina);
+
+/* stile aggiuntivo (src/styles/chat.css) inserito in fondo alla testata, così
+   viene dopo il CSS del sito e può correggerne le regole */
+const stileExtra = (await readFile(path.join(ROOT, "src", "styles", "chat.css"), "utf8")).trim();
+await scrivi("index.html", pagina.replace("</head>", `<style>\n${stileExtra}\n    </style>\n  </head>`));
 
 /* 2. chat: un solo script, come si aspetta la pagina */
 const intents = await readFile(path.join(ROOT, "src", "chat", "intents.js"), "utf8");
