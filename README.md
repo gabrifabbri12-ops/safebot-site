@@ -29,7 +29,7 @@ Netlify: build `node build.mjs`, publish directory `dist` (già scritti in `netl
 | `src/styles/chat.css` | ritocchi di stile per leggere la chat dal telefono |
 | `src/robots.txt`, `src/sitemap.xml` | file per i motori di ricerca |
 | `src/botpress.config.js` | configurazione della chat esterna (facoltativa) |
-| `SEGNALAZIONI.txt` | registro delle segnalazioni ricevute, in formato testo |
+| `segnalazioni/` | un file `.txt` per ogni segnalazione ricevuta, con modello e istruzioni (non viene pubblicata) |
 | `static/` | immagine Open Graph (og.png) in formato testo base64 |
 | `build.mjs` | mette insieme tutto dentro `dist/` |
 
@@ -60,10 +60,11 @@ chiavi. Non esiste alcun collegamento a fogli di lavoro o servizi esterni.
 Per riceverle via email: Netlify → **Forms** → **segnalazione** → **Notifications** →
 *Add notification* → *Email notification*.
 
-Per averle in un file di testo: Netlify → **Forms** → **segnalazione** →
-**Download as CSV** (è un file di testo) e incolla il contenuto in `SEGNALAZIONI.txt`,
-dove ogni segnalazione ha il suo blocco con data, contatto, testo, prove e stato.
-Il sito è statico e non può scrivere file da solo: quel file è la copia locale.
+Per averle una per una: attiva la notifica email (arriva **un messaggio per ogni
+segnalazione**) e copia ciascuna in un file separato dentro `segnalazioni/`, seguendo
+`segnalazioni/LEGGIMI.txt`: nome `2026-11-26_01.txt`, contenuto come `_MODELLO.txt`.
+Il sito è statico e non può creare file da solo; la cartella `segnalazioni/` non viene
+pubblicata (Netlify pubblica solo `dist/`), quindi le segnalazioni restano private.
 
 ## Immagini e stile
 

@@ -1,0 +1,16 @@
+Modello di una segnalazione
+===========================
+
+Copia questo file per ogni segnalazione che arriva, rinominalo come
+2026-11-26_01.txt (data + numero progressivo) e compila i campi.
+
+Data: 
+Anonimo: sì / no
+Contatto: 
+Cosa è successo: 
+Quando: 
+Dove: 
+Prove: 
+Pagina di invio: https://botsafe.netlify.app/#segnala
+Stato: da leggere / presa in carico / chiusa
+Note: 

@@ -1,0 +1,33 @@
+Segnalazioni di SafeBot — un file per segnalazione
+==================================================
+
+In questa cartella va un file .txt per ogni segnalazione ricevuta.
+
+Nome del file:  anno-mese-giorno_numero.txt
+Esempi:         2026-11-26_01.txt
+                2026-11-26_02.txt
+                2026-11-27_01.txt
+Il numero riparte da 01 ogni giorno.
+
+Contenuto:      copia _MODELLO.txt e compila i campi.
+
+Da dove arrivano le segnalazioni
+--------------------------------
+Il modulo del sito (https://botsafe.netlify.app/#segnala) salva ogni invio
+in Netlify Forms: Home del sito su Netlify → Forms → segnalazione.
+Ogni invio è una voce separata, con i suoi campi.
+
+Per riceverle una per una via email:
+  Forms → segnalazione → Notifications → Add notification →
+  Email notification → metti il tuo indirizzo.
+Arriva una email per ogni segnalazione: da lì copi il testo nel file
+corrispondente di questa cartella.
+
+Perché non si creano da sole
+----------------------------
+Il sito è statico (solo pagine, nessun server): non può scrivere file.
+Questi file li crea chi gestisce il sito, oppure si creano in automatico
+solo aggiungendo un piccolo servizio con un database sul sito.
+
+Questa cartella NON viene pubblicata online: il sito pubblica solo la
+cartella dist/, quindi le segnalazioni restano private.
