@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="SafeBot è il servizio online di ascolto e informazione su bullismo e cyberbullismo, aperto a tutti: cosa puoi fare, a chi rivolgerti e una chat AI per orientarti."
+      content="SafeBot: ascolto e informazioni su bullismo e cyberbullismo, gratis e senza registrazione. Cosa puoi fare, a chi rivolgerti e una chat AI che ti orienta."
     />
     <title>SafeBot — Supporto online contro bullismo e cyberbullismo</title>
     <script src="/botpress.config.js"></script>
@@ -18,6 +18,7 @@
     <link rel="canonical" href="https://botsafe.netlify.app/" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <meta name="theme-color" content="#0d9488" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="SafeBot" />
     <meta property="og:locale" content="it_IT" />
@@ -28,10 +29,12 @@
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="SafeBot, supporto online contro bullismo e cyberbullismo" />
+    <meta property="og:image:type" content="image/png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="SafeBot — Supporto online contro bullismo e cyberbullismo" />
     <meta name="twitter:description" content="Ascolto e informazioni su bullismo e cyberbullismo, gratis e senza registrazione. In caso di pericolo chiama il 112 o il 114." />
     <meta name="twitter:image" content="https://botsafe.netlify.app/og.png" />
+    <meta name="twitter:image:alt" content="SafeBot, supporto online contro bullismo e cyberbullismo" />
     <script type="application/ld+json">
 {
         "@context": "https://schema.org",
@@ -110,6 +113,22 @@
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text": "Da contenuti semplici e verificati su bullismo e cyberbullismo, sui passi da fare e sui servizi ufficiali italiani (112, 114, Telefono Azzurro, Polizia Postale, Garante Privacy). Non inventa numeri o procedure: quando non sa qualcosa lo dice e ti invita a parlare con una persona vera."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Devo raccontare per forza cosa è successo?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Puoi iniziare anche con \"non so da dove cominciare\" o \"ho solo una domanda\". Puoi fermarti quando vuoi e riprendere dopo."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Funziona dal telefono?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sì. Il sito e la chat sono pensati prima per lo schermo del telefono, poi per il computer."
                 }
               }
             ]

@@ -4,3 +4,40 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+# I file in /assets/ hanno l'impronta nel nome (es. index-Dd5nKMTV.js): quando
+# cambiano, cambia il nome. Quindi il browser può tenerli in cache un anno.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Immagini e icona: cambiano raramente.
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/favicon.ico"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Pagina principale: sempre ricontrollata, così le modifiche si vedono subito.
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# File per i motori di ricerca: un'ora di cache.
+[[headers]]
+  for = "/sitemap.xml"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/robots.txt"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
