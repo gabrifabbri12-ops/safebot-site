@@ -3,7 +3,7 @@
  *
  * Cosa fa:
  *  1. ricompone index.html dalle parti in src/page/ e aggiunge src/styles/chat.css;
- *  2. unisce intents.js e engine.js in un unico script della chat;
+ *  2. unisce intents.js, intents-extra.js e engine.js in un unico script della chat;
  *  3. copia robots.txt, sitemap.xml e botpress.config.js;
  *  4. recupera i file grafici (CSS, og.png, favicon.ico) dal sito attuale, se
  *     non sono già presenti nella cartella static/.
@@ -99,8 +99,9 @@ await scrivi("index.html", pagina.replace("</head>", `<style>\n${stileExtra}\n  
 
 /* 2. chat: un solo script, come si aspetta la pagina */
 const intents = await readFile(path.join(ROOT, "src", "chat", "intents.js"), "utf8");
+const extra = await readFile(path.join(ROOT, "src", "chat", "intents-extra.js"), "utf8");
 const engine = await readFile(path.join(ROOT, "src", "chat", "engine.js"), "utf8");
-const chat = `(function () {\n"use strict";\n\n${intents}\n\n${engine}\n})();\n`;
+const chat = `(function () {\n"use strict";\n\n${intents}\n\n${extra}\n\n${engine}\n})();\n`;
 await scrivi("assets/index-Dd5nKMTV.js", chat);
 
 /* 3. file di testo */
