@@ -1,9 +1,10 @@
 # SafeBot — sito ufficiale
 
 Sito one-page di **SafeBot**, supporto online contro bullismo e cyberbullismo, con la
-chat AI che aiuta a capire cosa fare, come salvare le prove e a chi rivolgersi.
+chat che aiuta a capire cosa fare, come salvare le prove e a chi rivolgersi.
 
 Indirizzo del sito: **https://botsafe.netlify.app/**
+Sitemap: **https://botsafe.netlify.app/sitemap.xml**
 
 ## Comandi
 
@@ -22,58 +23,54 @@ Netlify: build `node build.mjs`, publish directory `dist` (già scritti in `netl
 | Percorso | Cosa contiene |
 | --- | --- |
 | `src/page/part1-3.html` | la pagina, divisa in tre parti che il build riunisce in `index.html` |
-| `src/chat/intents.js` | gli argomenti che la chat riconosce: parole chiave, risposte, suggerimenti |
+| `src/chat/intents.js` | gli argomenti principali della chat: parole chiave, risposte, suggerimenti |
+| `src/chat/intents-extra.js` | altri argomenti e le parole chiave usate per capire anche i refusi |
 | `src/chat/engine.js` | il motore della chat: riconoscimento, priorità delle emergenze, modulo di segnalazione |
 | `src/styles/chat.css` | ritocchi di stile per leggere la chat dal telefono |
 | `src/robots.txt`, `src/sitemap.xml` | file per i motori di ricerca |
-| `src/botpress.config.js` | configurazione della chat esterna e del foglio Google (vedi sotto) |
-| `src/google-apps-script.gs` | script da incollare in un foglio Google per riceverci le segnalazioni |
+| `src/botpress.config.js` | configurazione della chat esterna (facoltativa) |
+| `SEGNALAZIONI.txt` | registro delle segnalazioni ricevute, in formato testo |
 | `static/` | immagine Open Graph (og.png) in formato testo base64 |
 | `build.mjs` | mette insieme tutto dentro `dist/` |
 
 ## Modificare una risposta della chat
 
-Apri `src/chat/intents.js`, cerca l'argomento (per esempio `"proofs"`), cambia il testo
-dentro `reply` e salva. Il grassetto si scrive con `**due asterischi**`, gli a capo con
-`\n`. Se aggiungi un argomento nuovo, mettilo **dopo** `crisis` e `danger-now` ma prima
-degli argomenti generici: l'ordine conta.
+Apri `src/chat/intents.js` (o `intents-extra.js`), cerca l'argomento (per esempio
+`"proofs"`), cambia il testo dentro `reply` e salva. Il grassetto si scrive con
+`**due asterischi**`, gli a capo con `\n`. Se aggiungi un argomento nuovo, mettilo
+**dopo** `crisis` e `danger-now` ma prima degli argomenti generici: a parità di
+corrispondenze vince quello scritto prima. Ogni argomento nuovo va aggiunto anche a
+`PAROLE` in `intents-extra.js` con le sue parole chiave.
 
 Il motore controlla sempre prima le frasi di emergenza (autolesionismo, pericolo
-immediato, ricatti), poi riconosce l'argomento con più parole chiave, poi le richieste
-fuori tema e solo alla fine dice "non ho capito".
+immediato, ricatti), poi riconosce l'argomento con più segnali (espressioni regolari e
+parole chiave, anche con una lettera sbagliata), poi le richieste fuori tema e solo
+alla fine dice "non ho capito". Se non capisce al primo colpo resta sull'argomento
+precedente; al secondo propone i numeri utili.
 
 Righe che iniziano con `•` o con `1.` diventano elenchi veri nella chat: è il modo più
 leggibile per le risposte lunghe sul telefono.
 
 ## Segnalazioni
 
-Il modulo "Segnala un episodio" usa **Netlify Forms**: le segnalazioni arrivano
-nella dashboard di Netlify del proprietario del sito, senza server e senza chiavi.
+Il modulo "Prepara una segnalazione" invia a **Netlify Forms**: le segnalazioni sono
+conservate nella dashboard di Netlify del proprietario del sito, senza server e senza
+chiavi. Non esiste alcun collegamento a fogli di lavoro o servizi esterni.
 
 Per riceverle via email: Netlify → **Forms** → **segnalazione** → **Notifications** →
 *Add notification* → *Email notification*.
 
-### Copia in un foglio Google (facoltativa)
-
-1. Crea un foglio Google e aprilo su **Estensioni → Apps Script**.
-2. Incolla il contenuto di `src/google-apps-script.gs`, salva, esegui
-   `eseguiIntestazioni` (crea il foglio "Segnalazioni").
-3. **Esegui il deployment → Nuovo deployment → App web**, esecuzione "me",
-   accesso "chiunque"; copia l'indirizzo che finisce con `/exec`.
-4. Incollalo in `src/botpress.config.js` → `reportEndpoint`, fai commit.
-
-Da quel momento ogni segnalazione viene copiata anche lì, in una riga con queste
-colonne: **Data · Anonimo · Contatto · Cosa è successo · Quando · Dove · Prove ·
-Pagina**. Netlify Forms continua a riceverla comunque, così niente va perso se il
-foglio ha un problema o l'indirizzo cambia.
+Per averle in un file di testo: Netlify → **Forms** → **segnalazione** →
+**Download as CSV** (è un file di testo) e incolla il contenuto in `SEGNALAZIONI.txt`,
+dove ogni segnalazione ha il suo blocco con data, contatto, testo, prove e stato.
+Il sito è statico e non può scrivere file da solo: quel file è la copia locale.
 
 ## Immagini e stile
 
 `og.png` sta in `static/` come testo base64 (quattro parti: `.part1` … `.part4`),
 il build lo trasforma in immagine. Il CSS e la favicon vengono presi dal sito
-attuale durante il build; per
-averli nel repository basta copiarli in `static/` con lo stesso nome
-(`index-xSUd54VX.css`, `favicon.ico`).
+attuale durante il build; per averli nel repository basta copiarli in `static/`
+con lo stesso nome (`index-xSUd54VX.css`, `favicon.ico`).
 
 ## Collegare una chat con AI generativa (opzionale)
 

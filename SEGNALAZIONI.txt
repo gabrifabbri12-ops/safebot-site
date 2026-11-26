@@ -1,0 +1,39 @@
+SafeBot — segnalazioni ricevute
+================================
+
+Questo è il registro delle segnalazioni in formato testo.
+Una segnalazione per blocco, separate da una riga vuota.
+
+COME ARRIVANO LE SEGNALAZIONI
+------------------------------
+Il modulo "Prepara una segnalazione" del sito (https://botsafe.netlify.app)
+salva ogni invio in Netlify Forms, Home del sito su Netlify → Forms →
+segnalazione. Da lì:
+  • puoi riceverle via email (Forms → segnalazione → Notifications →
+    Add notification → Email notification);
+  • puoi scaricarle tutte insieme con "Download as CSV": è un file di testo
+    che puoi aprire con Note, Blocco note o Excel e incollare qui sotto.
+
+Il sito è statico: non può scrivere da solo in questo file sul computer, per
+questo le segnalazioni si copiano qui da Netlify (o dall'email) quando arrivano.
+
+FORMATO DI UNA SEGNALAZIONE
+---------------------------
+Data: 
+Anonimo: sì/no
+Contatto: 
+Cosa è successo: 
+Quando: 
+Dove: 
+Prove: 
+Pagina di invio: 
+
+Stato: da leggere / presa in carico / chiusa
+Note: 
+
+
+------------------------------------------------------------------------------
+SEGNALAZIONI
+------------------------------------------------------------------------------
+
+(nessuna segnalazione registrata)
