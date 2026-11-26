@@ -46,6 +46,11 @@
 
           <form class="report" id="report-form" name="segnalazione" method="POST" data-netlify="true" netlify-honeypot="website" novalidate>
             <input type="hidden" name="form-name" value="segnalazione" />
+            <input
+              type="hidden"
+              name="subject"
+              value="Segnalazione SafeBot #%{submissionId}"
+            />
             <label class="check">
               <input type="checkbox" id="report-anonymous" name="anonymous" checked />
               <span>Voglio restare <strong>anonimo</strong></span>
