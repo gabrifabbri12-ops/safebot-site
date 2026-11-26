@@ -131,25 +131,76 @@ const isCrisis = (text) => CRISIS.patterns.some((pattern) => pattern.test(text))
 
 const isOffTopic = (text) => OFF_TOPIC.patterns.some((pattern) => pattern.test(text));
 
-/* L'argomento con più parole chiave trovate; a parità vince chi sta prima. */
+/* Parole del messaggio, senza punteggiatura: "ciao, come stai?" → ciao come stai */
+const tokenize = (text) => text.match(/[a-z0-9]+/g) || [];
+
+/*
+ * Vero se tra due parole lunghe c'è al massimo un errore di battitura (una
+ * lettera sbagliata, mancante o in più). Serve a capire "bullsmo",
+ * "insultono", "discriminazioone": chi scrive di fretta dal telefono sbaglia
+ * spesso. Le parole corte restano escluse, altrimenti "bullo" sarebbe uguale
+ * a "bulli" e a mezzo dizionario.
+ */
+function vicina(a, b) {
+  if (a === b) return true;
+  if (Math.min(a.length, b.length) < 6 || Math.abs(a.length - b.length) > 1) return false;
+  let i = 0;
+  let j = 0;
+  let errori = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) {
+      i += 1;
+      j += 1;
+      continue;
+    }
+    errori += 1;
+    if (errori > 1) return false;
+    if (a.length > b.length) i += 1;
+    else if (a.length < b.length) j += 1;
+    else {
+      i += 1;
+      j += 1;
+    }
+  }
+  errori += a.length - i + (b.length - j);
+  return errori <= 1;
+}
+
+/*
+ * Quanto un argomento somiglia al messaggio: 2 punti per ogni espressione
+ * regolare trovata e per ogni parola chiave, scritta bene o con un refuso.
+ * A parità vince l'argomento scritto prima.
+ */
+function punteggio(intent, text, parole) {
+  let score = 0;
+  for (const pattern of intent.patterns) if (pattern.test(text)) score += 2;
+  const chiavi = PAROLE[intent.id] || [];
+  /* ogni parola del messaggio conta una volta sola, scritta bene o con un refuso */
+  for (const parola of parole) {
+    if (chiavi.includes(parola) || chiavi.some((chiave) => vicina(parola, chiave))) score += 2;
+  }
+  return score;
+}
+
 function pickIntent(text) {
+  const parole = tokenize(text);
   let best = null;
   let bestScore = 0;
   for (const intent of INTENTS) {
-    let score = 0;
-    for (const pattern of intent.patterns) if (pattern.test(text)) score += 1;
+    const score = punteggio(intent, text, parole);
     if (score > bestScore) {
       best = intent;
       bestScore = score;
     }
   }
-  return best;
+  return bestScore >= 2 ? best : null;
 }
 
 /* ---------------------------------------------------------------- rendering */
 
 let busy = false;
 let lastUnclear = false;
+let ultimoIntent = null;
 
 function addBubble(text, who, options = {}) {
   if (!ui.messages) return null;
@@ -231,6 +282,7 @@ function reply(rawText) {
     if (isCrisis(text)) {
       flow = null;
       lastUnclear = false;
+      ultimoIntent = null;
       addBubble(CRISIS.reply, "bot", { urgent: true });
       addChips(CRISIS.chips);
       busy = false;
@@ -241,6 +293,7 @@ function reply(rawText) {
     if (/ (annulla|ricomincia|ricominciamo|stop|basta così|da capo) /.test(text)) {
       flow = null;
       lastUnclear = false;
+      ultimoIntent = null;
       addBubble("Va bene, ripartiamo da zero. Di cosa vuoi parlare?", "bot");
       addChips(FALLBACK.chips);
       busy = false;
@@ -258,6 +311,7 @@ function reply(rawText) {
     const intent = pickIntent(text);
     if (intent) {
       lastUnclear = false;
+      ultimoIntent = intent;
       addBubble(intent.reply, "bot", { urgent: intent.urgent });
       addChips(intent.chips);
       if (intent.startFlow) {
@@ -277,7 +331,16 @@ function reply(rawText) {
       return;
     }
 
-    /* 6. non ho capito: al secondo tentativo passo ai numeri veri */
+    /* 6. non ho capito: primo tentativo, resto sull'argomento di prima */
+    if (!lastUnclear && ultimoIntent) {
+      addBubble("Non sono sicuro di aver capito, scusami. Se ti va restiamo su questo:", "bot");
+      addChips(ultimoIntent.chips);
+      lastUnclear = true;
+      busy = false;
+      return;
+    }
+
+    /* secondo tentativo: passo ai numeri veri */
     addBubble(FALLBACK.reply, "bot");
     addChips(FALLBACK.chips);
     if (lastUnclear) {
@@ -438,29 +501,6 @@ const reportConsent = $("report-consent");
 const reportStatus = $("report-status");
 const reportSubmit = $("report-submit");
 
-/*
- * Copia facoltativa della segnalazione in un foglio Google, tramite il
- * modulo Apps Script di src/google-apps-script.gs (indirizzo in
- * botpress.config.js → reportEndpoint). Il foglio non può rispondere al
- * browser, quindi la chiamata parte e non si aspetta la risposta: la
- * segnalazione resta comunque salvata da Netlify Forms.
- */
-function copiaNelFoglio(dati) {
-  const endpoint = config.reportEndpoint;
-  if (!endpoint) return;
-  try {
-    fetch(endpoint, {
-      method: "POST",
-      mode: "no-cors",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ ...dati, pagina: window.location.href }),
-      keepalive: true,
-    }).catch(() => {});
-  } catch (errore) {
-    console.warn("[SafeBot] foglio Google non raggiungibile:", errore);
-  }
-}
-
 const setReportStatus = (message, kind = "") => {
   if (!reportStatus) return;
   reportStatus.textContent = message;
@@ -491,7 +531,7 @@ reportForm?.addEventListener("submit", async (event) => {
     return;
   }
 
-  /* I dati li raccoglie Netlify Forms (e, se attivo, il foglio Google). */
+  /* I dati li raccoglie e li conserva Netlify Forms. */
   const dati = {
     anonimo: anonymous?.checked ? "sì" : "no",
     contatto: anonymous?.checked ? "" : (contactInput?.value.trim() ?? ""),
@@ -523,7 +563,6 @@ reportForm?.addEventListener("submit", async (event) => {
       body: body.toString(),
     });
     if (!response.ok) throw new Error("Invio non riuscito");
-    copiaNelFoglio(dati);
     const success = $("report-success");
     if (reportForm) reportForm.hidden = true;
     if (success) {
