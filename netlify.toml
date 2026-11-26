@@ -41,3 +41,8 @@
   for = "/robots.txt"
   [headers.values]
     Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Safebot-Config = "ok"
