@@ -544,6 +544,9 @@ reportForm?.addEventListener("submit", async (event) => {
 
   const body = new URLSearchParams({
     "form-name": "segnalazione",
+    /* Netlify sostituisce %{submissionId} con il numero della segnalazione:
+       così ogni email ha un oggetto diverso e non finisce in un unico thread. */
+    subject: "Segnalazione SafeBot #%{submissionId}",
     anonymous: dati.anonimo,
     contact: dati.contatto,
     what: dati.cosa,
